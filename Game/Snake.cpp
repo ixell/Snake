@@ -11,12 +11,20 @@ void Snake::set_limits(int limit_x, int limit_y) {
 	this->limit_y = limit_y;
 }
 
+void Snake::change_direction(Direction direction) {
+	this->direction = direction;
+}
+
 int Snake::get_limit_x() {
 	return limit_x;
 }
 
 int Snake::get_limit_y() {
 	return limit_y;
+}
+
+Snake::Direction Snake::get_direction() {
+	return direction;
 }
 
 SnakeBlock* Snake::getHead() {

@@ -21,6 +21,7 @@ protected:
 	afx_msg void OnClose();
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	DECLARE_MESSAGE_MAP()
 private:
 	Snake snake;

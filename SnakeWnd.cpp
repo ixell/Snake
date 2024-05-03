@@ -29,6 +29,7 @@ BEGIN_MESSAGE_MAP(CSnakeWnd, CWnd)
 	ON_WM_DESTROY()
 	ON_WM_TIMER()
 	ON_WM_CLOSE()
+	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 
@@ -94,6 +95,15 @@ void CSnakeWnd::OnPaint() {
 
 HCURSOR CSnakeWnd::OnQueryDragIcon() {
 	return static_cast<HCURSOR>(m_hIcon);
+}
+
+void CSnakeWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+	switch (nChar) {
+	case 'W': if (snake.get_direction() != Snake::down)	 snake.change_direction(Snake::up);	   return;
+	case 'A': if (snake.get_direction() != Snake::right) snake.change_direction(Snake::left);  return;
+	case 'S': if (snake.get_direction() != Snake::up)	 snake.change_direction(Snake::down);  return;
+	case 'D': if (snake.get_direction() != Snake::left)	 snake.change_direction(Snake::right); return;
+	}
 }
 
 void CSnakeWnd::Update() {

@@ -15,9 +15,13 @@ private:
 	int limit_x, limit_y;
 public:
 	Snake(Direction direction, SnakeBlock&& head);
+	
 	void set_limits(int limit_x, int limit_y);
+	void change_direction(Direction direction);
+
 	int get_limit_x();
 	int get_limit_y();
+	Direction get_direction();
 	SnakeBlock* getHead();
 	
 	bool update();
