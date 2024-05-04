@@ -13,7 +13,7 @@
 
 CSnakeWnd::CSnakeWnd()
 	: CWnd(), m_hIcon(AfxGetApp()->LoadIcon(IDR_MAINFRAME)),
-	  snake(2, 2, Snake::right, 4), apple(0, 0) {
+	  snake(2, 2, Snake::right, 10), apple(0, 0) {
 	snake.set_limits(20, 20);
 	apple.set_limits(20, 20);
 }

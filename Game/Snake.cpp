@@ -15,7 +15,9 @@ Snake::Snake(int x, int y, Direction direction, int length)
 	case down: move_y = 1; break;
 	}
 	for (; length != 0; --length) {
-		block->addFollowing(x - move_x, y - move_y);
+		x -= move_x;
+		y -= move_y;
+		block->addFollowing(x, y);
 		block = block->getFollowing();
 	}
 }
