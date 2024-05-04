@@ -30,7 +30,7 @@ target_precompile_headers (
 		"Window/targetver.h"
 )
 
-target_include_directories (Snake PUBLIC Window .)
+target_include_directories (Snake PRIVATE Window .)
 
 add_subdirectory (Game)
 

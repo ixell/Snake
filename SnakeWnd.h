@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "resource.h"
 #include "Snake.h"
+#include "Apple.h"
 
 class CSnakeWnd : public CWnd
 {
@@ -25,6 +26,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 private:
 	Snake snake;
+	Apple apple;
 
 	void Update();
 };

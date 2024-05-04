@@ -9,13 +9,13 @@
 #define new DEBUG_NEW
 #endif
 
-#define PAINT_TIMER 0
-#define UPDATE_TIMER 1
+#define UPDATE_TIMER 0
 
 CSnakeWnd::CSnakeWnd()
 	: CWnd(), m_hIcon(AfxGetApp()->LoadIcon(IDR_MAINFRAME)),
-	  snake(2, 2, Snake::right, 4) {
+	  snake(2, 2, Snake::right, 4), apple(0, 0) {
 	snake.set_limits(20, 20);
+	apple.set_limits(20, 20);
 }
 
 void CSnakeWnd::DoDataExchange(CDataExchange* pDX) {
@@ -34,7 +34,7 @@ END_MESSAGE_MAP()
 
 
 void CSnakeWnd::OnDestroy() {
-	KillTimer(PAINT_TIMER);
+	KillTimer(UPDATE_TIMER);
 	UnregisterClass("SnakeWnd", AfxGetApp()->m_hInstance);
 	CWnd::OnDestroy();
 	AfxGetApp()->SaveAllModified();
@@ -46,11 +46,9 @@ void CSnakeWnd::OnClose() {
 
 void CSnakeWnd::OnTimer(UINT_PTR timer) {
 	switch (timer) {
-	case PAINT_TIMER:
-		RedrawWindow();
-		break;
 	case UPDATE_TIMER:
 		Update();
+		RedrawWindow();
 		break;
 	}
 }
@@ -78,18 +76,22 @@ void CSnakeWnd::OnPaint() {
 	}
 	else {
 		CRect rect;
-		GetWindowRect(&rect);
+		GetClientRect(&rect);
 		int w = rect.Width() / snake.get_limit_x();
 		int h = rect.Height() / snake.get_limit_y();
-		CBrush brush;
 		for (SnakeBlock* block = snake.getHead();
 				block != nullptr; block = block->getFollowing()) {
-			rect.left = block->get_x() * w;
-			rect.top = block->get_y() * h;
-			rect.right = rect.left + w;
-			rect.bottom = rect.top + h;
-			dc.FillSolidRect(static_cast<LPCRECT>(&rect), 0x80ff80);
+			rect.left	= block->get_x() * w;
+			rect.top	= block->get_y() * h;
+			rect.right	= rect.left + w;
+			rect.bottom	= rect.top + h;
+			dc.FillSolidRect(static_cast<LPCRECT>(&rect), 0x80ff80/*green*/);
 		}
+		rect.left	= apple.get_x() * w;
+		rect.top	= apple.get_y() * h;
+		rect.right	= rect.left + w;
+		rect.bottom = rect.top + h;
+		dc.FillSolidRect(static_cast<LPCRECT>(&rect), 0x4040ff/*red*/);
 	}
 }
 
@@ -121,6 +123,7 @@ void CSnakeWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 void CSnakeWnd::Update() {
 	snake.update();
+	snake.try_eat(apple);
 }
 
 BOOL CSnakeWnd::Create(LPCTSTR title, CRect rect, CWnd* pParent, uint16_t fps, uint16_t tps) {
@@ -165,7 +168,6 @@ BOOL CSnakeWnd::Create(LPCTSTR title, CRect rect, CWnd* pParent, uint16_t fps, u
 		return FALSE;
 	}
 
-	SetTimer(PAINT_TIMER, (1000U / fps), (TIMERPROC)NULL);
 	SetTimer(UPDATE_TIMER, (1000U / tps), (TIMERPROC)NULL);
 
 	//SetCursor(AfxGetApp()->LoadCursorW(MAKEINTRESOURCE(IDC_ARROW)));

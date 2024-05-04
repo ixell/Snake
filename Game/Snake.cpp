@@ -1,6 +1,5 @@
 #include "Snake.h"
-#include "Snake.h"
-#include "Snake.h"
+#include "Apple.h"
 
 Snake::Snake(Direction direction, SnakeBlock&& head)
 	: direction(direction), head(head), next_direction(direction) {}
@@ -8,8 +7,15 @@ Snake::Snake(Direction direction, SnakeBlock&& head)
 Snake::Snake(int x, int y, Direction direction, int length)
 	: Snake(direction, SnakeBlock(x, y, nullptr)) {
 	SnakeBlock* block = &head;
+	int move_x = 0, move_y = 0;
+	switch (direction) {
+	case left: move_x = -1; break;
+	case right: move_x = 1; break;
+	case up: move_y = -1; break;
+	case down: move_y = 1; break;
+	}
 	for (; length != 0; --length) {
-		block->addFollowing(x, y);
+		block->addFollowing(x - move_x, y - move_y);
 		block = block->getFollowing();
 	}
 }
@@ -66,7 +72,18 @@ bool Snake::update() {
 	case up: y -= 1; break;
 	case down: y += 1; break;
 	}
-	return head.move((x + limit_x) % limit_x, (y + limit_y) % limit_y);
+	x = (x + limit_x) % limit_x;
+	y = (y + limit_y) % limit_y;
+	if (coming_block) {
+		coming_block = false;
+		return head.grow(x, y);
+	}
+	return head.move(x, y);
 }
 
-
+void Snake::try_eat(Apple& apple) {
+	if (head.get_x() == apple.get_x() && head.get_y() == apple.get_y()) {
+		apple.move();
+		coming_block = true;
+	}
+}

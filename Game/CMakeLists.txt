@@ -7,4 +7,6 @@ target_sources (Snake
 		"Snake.h"
 		"SnakeBlock.cpp"
 		"SnakeBlock.h"
+		"Apple.cpp"
+		"Apple.h"
 )

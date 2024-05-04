@@ -19,9 +19,19 @@ SnakeBlock* SnakeBlock::getFollowing() {
 bool SnakeBlock::move(int x, int y) {
 	if (check_collision(x, y))
 		return false;
+	bool r = (following == nullptr ? true : following->move(this->x, this->y));
 	this->x = x;
 	this->y = y;
-	return following == nullptr ? true : following->move(x, y);
+	return r;
+}
+
+bool SnakeBlock::grow(int x, int y) {
+	if (check_collision(x, y))
+		return false;
+	addFollowing(this->x, this->y);
+	this->x = x;
+	this->y = y;
+	return true;
 }
 
 bool SnakeBlock::check_collision(int x, int y) {
@@ -30,7 +40,7 @@ bool SnakeBlock::check_collision(int x, int y) {
 }
 
 void SnakeBlock::addFollowing(int x, int y) {
-	following = new SnakeBlock(x, y, nullptr);
+	following = new SnakeBlock(x, y, following);
 }
 
 SnakeBlock::~SnakeBlock() {

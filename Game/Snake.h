@@ -1,5 +1,6 @@
 #pragma once
 #include "SnakeBlock.h"
+#include "Apple.h"
 
 class Snake {
 public:
@@ -14,6 +15,7 @@ private:
 	SnakeBlock head;
 	int limit_x{ 1000 }, limit_y{ 1000 };
 	Direction next_direction;
+	bool coming_block{ false };
 protected:
 	Snake(Direction direction, SnakeBlock&& head);
 public:
@@ -27,4 +29,5 @@ public:
 	SnakeBlock* getHead();
 	
 	bool update();
+	void try_eat(Apple& apple);
 };
