@@ -12,10 +12,12 @@ public:
 private:
 	Direction direction;
 	SnakeBlock head;
-	int limit_x, limit_y;
-public:
+	int limit_x{ 1000 }, limit_y{ 1000 };
+	Direction next_direction;
+protected:
 	Snake(Direction direction, SnakeBlock&& head);
-	
+public:
+	Snake(int x, int y, Direction direction, int lentgh);
 	void set_limits(int limit_x, int limit_y);
 	void change_direction(Direction direction);
 

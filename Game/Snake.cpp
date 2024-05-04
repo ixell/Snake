@@ -3,8 +3,16 @@
 #include "Snake.h"
 
 Snake::Snake(Direction direction, SnakeBlock&& head)
-	: direction(direction), head(head),
-	  limit_x(1000), limit_y(1000) {}
+	: direction(direction), head(head), next_direction(direction) {}
+
+Snake::Snake(int x, int y, Direction direction, int length)
+	: Snake(direction, SnakeBlock(x, y, nullptr)) {
+	SnakeBlock* block = &head;
+	for (; length != 0; --length) {
+		block->addFollowing(x, y);
+		block = block->getFollowing();
+	}
+}
 
 void Snake::set_limits(int limit_x, int limit_y) {
 	this->limit_x = limit_x;
@@ -12,7 +20,25 @@ void Snake::set_limits(int limit_x, int limit_y) {
 }
 
 void Snake::change_direction(Direction direction) {
-	this->direction = direction;
+	switch (this->direction) {
+	case up:
+		if (direction == down)
+			return;
+		break;
+	case left:
+		if (direction == right)
+			return;
+		break;
+	case down:
+		if (direction == up)
+			return;
+		break;
+	case right:
+		if (direction == left)
+			return;
+		break;
+	}
+	this->next_direction = direction;
 }
 
 int Snake::get_limit_x() {
@@ -32,6 +58,7 @@ SnakeBlock* Snake::getHead() {
 }
 
 bool Snake::update() {
+	direction = next_direction;
 	int x = head.get_x(), y = head.get_y();
 	switch (direction) {
 	case left: x -= 1; break;

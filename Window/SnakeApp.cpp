@@ -38,7 +38,7 @@ BOOL CSnakeApp::InitInstance() {
 	SetRegistryKey(_T("-"));
 
 	CSnakeWnd* wnd = new CSnakeWnd;
-	if (!wnd->Create("Snake", CRect(100, 100, 640, 640), nullptr, 10, 10))
+	if (!wnd->Create("Snake", CRect(100, 100, 640, 640), nullptr, 8, 8))
 		return FALSE;
 	m_pMainWnd = static_cast<CWnd*>(wnd);
 	wnd->ShowWindow(SW_SHOW);

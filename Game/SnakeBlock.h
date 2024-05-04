@@ -14,5 +14,5 @@ public:
 	
 	bool move(int x, int y);
 	bool check_collision(int x, int y);
-	void add_following(int x, int y);
+	void addFollowing(int x, int y);
 };

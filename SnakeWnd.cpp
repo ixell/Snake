@@ -14,7 +14,7 @@
 
 CSnakeWnd::CSnakeWnd()
 	: CWnd(), m_hIcon(AfxGetApp()->LoadIcon(IDR_MAINFRAME)),
-	  snake(Snake::right, SnakeBlock(2, 2, nullptr)) {
+	  snake(2, 2, Snake::right, 4) {
 	snake.set_limits(20, 20);
 }
 
@@ -99,11 +99,24 @@ HCURSOR CSnakeWnd::OnQueryDragIcon() {
 
 void CSnakeWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 	switch (nChar) {
-	case 'W': if (snake.get_direction() != Snake::down)	 snake.change_direction(Snake::up);	   return;
-	case 'A': if (snake.get_direction() != Snake::right) snake.change_direction(Snake::left);  return;
-	case 'S': if (snake.get_direction() != Snake::up)	 snake.change_direction(Snake::down);  return;
-	case 'D': if (snake.get_direction() != Snake::left)	 snake.change_direction(Snake::right); return;
+	case VK_UP:
+	case 'W':
+		snake.change_direction(Snake::up);
+		return;
+	case VK_LEFT:
+	case 'A':
+		snake.change_direction(Snake::left);
+		return;
+	case VK_DOWN:
+	case 'S':
+		snake.change_direction(Snake::down);
+		return;
+	case VK_RIGHT:
+	case 'D':
+		snake.change_direction(Snake::right);
+		return;
 	}
+	CWnd::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
 void CSnakeWnd::Update() {

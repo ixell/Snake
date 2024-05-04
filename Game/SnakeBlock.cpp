@@ -26,10 +26,10 @@ bool SnakeBlock::move(int x, int y) {
 
 bool SnakeBlock::check_collision(int x, int y) {
 	return this->x == x && this->y == y ? true
-		: (following == nullptr ? false : check_collision(x, y));
+		: (following == nullptr ? false : following->check_collision(x, y));
 }
 
-void SnakeBlock::add_following(int x, int y) {
+void SnakeBlock::addFollowing(int x, int y) {
 	following = new SnakeBlock(x, y, nullptr);
 }
 
